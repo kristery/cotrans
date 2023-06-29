@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="description"
-        content="Deformable Neural Radiance Fields creates free-viewpoint portraits (nerfies) from casually captured videos.">
+        content="CoTransporter: Offline Multi-Agent Reinforcement Learning for Object Manipulation">
   <meta name="keywords" content="Offline reinforcement learning, multi-agent reinforcement learning, behavior cloning">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CoTransporter: Offline Multi-Agent Reinforcement Learning for Object Manipulation</title>
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
 
@@ -20,7 +20,7 @@
     gtag('js', new Date());
 
     gtag('config', 'G-PYVRSFMDRL');
-  </script>
+  </script> -->
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
         rel="stylesheet">
@@ -95,7 +95,7 @@
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">CoTransporter: Offline Multi-Agent Reinforcement Learning for Object Manipulation</h1>
+          <h1 class="title is-2 publication-title">CoTransporter: Offline Multi-Agent Reinforcement Learning for Object Manipulation</h1>
           <div class="is-size-5 publication-authors">
             <span class="author-block">
               <a href="https://kristery.github.io/">Yueh-Hua Wu</a><sup>1</sup>,</span>
@@ -135,9 +135,12 @@
   <div class="container is-max-desktop">
     <div class="hero-body">
       <div class="youtube-video-wrapper">
-        <div class="youtube-video">
-          <iframe width="840" height="472" src="https://www.youtube.com/embed/1Cx96ba82wI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-        </div>
+        <div class="columns is-centered">              
+          <video id="dollyzoom" autoplay playsinline controls width="100%">
+            <source src="static/videos/CoTransporter.mp4"
+                    type="video/mp4">
+          </video>
+      </div>
       </div>
     </div>
   </div>
@@ -206,20 +209,32 @@
 <section class="hero is-light is-small">
   <div class="container is-max-desktop">
     <div class="hero-body">
-      <h2 class="title is-4 colored-bold" style="text-align: center;">Achieving Trajectory Stitching Using Non-Stitching Models</h2>
+      <h2 class="title is-4 colored-bold" style="text-align: center;">Learning pick-and-place with behavior cloning and offline multi-agent reinforcement learning</h2>
 
       <div class="image-container" style="test-align: center;">
-        <img src="./static/images/edt_motivation.png" alt="Motivation" style="max-width: 350px; margin: auto; display: block;">
+        <img src="./static/images/cotransporter.png" alt="Motivation" style="max-width: 900px; margin: auto; display: block;">
       </div>
 
       <!-- Adding some words below the image -->
       <div class="text-container" style="text-align: left; margin-bottom: 20px;">
         <div class="content has-text-justified">
           <p>
-          We show that achieving trajectory stitching is possible without explicitly training Decision Transformer (DT) to stitch. 
-          A key insight is that DT can be utilized to stitch by adjusting the history length maintained in DT. 
-          Given two trajectories \(s^a, s^b\) in a datasets, a non-stitching model starting from \( s_{t-1}^b \) may end up with a sub-optimal state \( s_{t+1}^b \) as in the dataset. 
-          However, if we are able to adjust the history length to 1 at \( s_t \), the model will be able to stitch with \( s_{t+1}^a \) and generate a more optimal trajectory since there exists \( s_t\rightarrow s_{t+1}^a\) in the dataset.
+          In this work, we propose CoTransporter that combines the Transporter Networks and offline multi-agent reinforcement learning (MARL) to learn to manipulate objects with 
+          imperfect demonstrations.
+          We demonstrate that behavior cloning using cross entropy loss is at odds with accurate Q-value learning. To rectify this, we constrain the Q-value networks to 
+          output-bounded networks. With a sufficiently large range, these networks can effectively balance the objectives of behavior cloning and Q-value learning.
+          </p>
+          <p>
+          We further propose to estimate the offline MARL objective with a sparse reward function and no additional information is required. 
+          The goal reward within this sparse reward function is correlated with the Q-value networks and can be determined regardless of the specific task. 
+          Although learning from a sparse reward in an offline fashion is challenging, 
+          CoTransporter utilize behavior cloning to prevent convergence to a sub-optimal policy and meanwhile learn a policy that significantly surpasses one that merely mimics 
+          demonstrations.
+          </p>
+          <p>
+          Furthermore, we address the instability arising from direct optimization of the MARL objective, as the place agent relies on the pick agent's output. 
+          We optimize a novel objective to enforce collaboration between pick and place agents and meanwhile to ensure stable improvements individually. The figure summarizes our 
+          method of estimating behavior cloning and offline MARL objectives.
           </p>
         </div>
       </div>
@@ -239,7 +254,7 @@
           We compare and visualize our CoTransporter to Transporter Networks with the same initial states.
           </p>
             
-            <div style="padding: 12px;"></div>
+            <div style="padding: 4px;"></div>
             <div class="columns is-centered">              
                 <video id="dollyzoom" autoplay playsinline controls muted loop width="100%">
                   <source src="static/videos/ring.mp4"
@@ -247,7 +262,7 @@
                 </video>
             </div>
 
-            <div style="padding: 12px;"></div>
+            <div style="padding: 4px;"></div>
             <div class="columns is-centered">              
                 <video id="dollyzoom" autoplay playsinline controls muted loop width="100%">
                   <source src="static/videos/cloth.mp4"
@@ -290,22 +305,6 @@
 </section>
 
 
-<section class="section" style="background-color: black;">
-  <div class="container is-max-desktop">
-
-    <!-- Paper video. -->
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-4 colored-bold">Summary</h2>
-        <div class="publication-video">
-          <iframe width="560" height="315" src="https://www.youtube.com/embed/WOYe0A5W4T0" title="YouTube video player" frameborder="0" 
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-        </div>
-      </div>
-    </div>
-    <!--/ Paper video. -->
-  </div>
-</section>
 
 
 
@@ -319,35 +318,40 @@
       <div class="column is-four-fifths">
         <h2 class="title is-3 colored-bold">Results</h2>
 
-        <h2 class="title is-5 has-text-left">Atari (multi-task)</h2>
-        <div class="image-container" style="text-align: center; max-width: 500px; margin: auto; display: block;">
+        <p style="text-align: left;">
+          We evalute the models with two metrics, success rate and normalized efficiency metric (NEM).
+          If a model is able to reach the goal state within the maximum steps, the trial is considered as a success.
+          The NEM is defined as \(\text{NEM}=\frac{1}{n}\sum_{i=1}^n \frac{\text{MaxStep}(\text{task})}{\text{Step}_i}\mathbb{1}(\text{MaxStep}(\text{task})\geq\text{Step}_i)\),
+          which not only considers the success rate but also the step efficiency to accomplish the task.
+        </p>
+        <p style="text-align: left;">
+          The values besides the task suggest the length of the shortest trajectory in the training dataset.
+          The higher the value, the more challenging the dataset.
+        </p>
+        <div style="padding: 8px;"></div>
+        <h2 class="title is-5 has-text-left">Success Rate</h2>
+        <div class="image-container" style="text-align: center; max-width: 800px; margin: auto; display: block;">
           <!-- Adding the image named image.png -->
-          <video id="result_id" autoplay muted loop playsinline height="100%">
-            <source src="./static/videos/edt_teaser2.mp4"
-                    type="video/mp4">
-          </video>
-          <img src="./static/images/Atari_mean.png" alt="Some description of the image">
+          <img src="./static/images/table1.png" alt="Some description of the image">
         </div>
 
         <div class="content has-text-justified">
           <p>
-            <span class="colored-bold">Multi-game Atari results.</span> The proposed EDT improves the performance of DT by <span class="colored-bold">39.8%</span>.
-            We consider <span class="colored-bold">20</span> Atari games for the multi-game setting.        
+            The proposed CoTransporter improves the performance of DT by <span class="colored-bold">25.0%</span>.        
           </p>
         </div>
 
 
-        <h2 class="title is-5 has-text-left">D4RL (multi-task)</h2>
-        <div class="image-container" style="text-align: center; max-width: 450px; margin: auto; display: block;">
+        <h2 class="title is-5 has-text-left">Normalized Efficiency Metric (NEM)</h2>
+        <div class="image-container" style="text-align: center; max-width: 800px; margin: auto; display: block;">
           <!-- Adding the image named image.png -->
-          <img src="./static/images/d4rl_summary.png" alt="Some description of the image">
+          <img src="./static/images/table2.png" alt="Some description of the image">
         </div>
 
         <div class="content has-text-justified">
           <p>
-            <span class="colored-bold">Multi-task D4RL results.</span> The proposed EDT outperform the baseline methods by a large margin in a multi-task setting.
-            We gather <span class="colored-bold">medium-replay</span> datasets from the four tasks as a single dataset for training. The medium-replay datasets contain trajectories collected from random policies, 
-            which makes it challenging for non-stitching methods. 
+              The proposed CoTransporter improves the performance of DT by <span class="colored-bold">32.5%</span>,
+              which shows that CoTransporter not only achieves higher success rate but also accomplishes the task with fewer steps.
           </p>
         </div>
 
@@ -357,35 +361,6 @@
   </div>
 </section>
 
-
-<section class="section">
-  <div class="container is-max-desktop">
-    <!-- Abstract. -->
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-4 colored-bold">Method</h2>
-
-        <div class="image-container" style="text-align: center;">
-          <!-- Adding the image named image.png -->
-          <img src="./static/images/edt_inference.png" alt="Some description of the image">
-        </div>
-
-        <div class="content has-text-justified">
-          <p>
-            The figure illustrates the action inference procedure within the proposed Elastic Decision Transformer. 
-            Initially, we estimate the value maximizer, \( \tilde{R}_i \), for each length \(i\) within the search space, as delineated by the green rectangle. 
-            Subsequently, we identify the maximal value from all \(\tilde{R}_i\), which provides the optimal history length \(w\). 
-            Utilizing this optimal history length, we estimate the expert value at time step \(t\), denoted as \(\tilde{R}^t_{w,e}\), by Bayes' Rule. 
-            Finally, the action prediction is accomplished via the causal transformer decoder, which is indicated by the blue rectangle. 
-            In practice, we retain the distribution of \(R_i^t\) during the estimation process for \(\tilde{R}_i\) and we present the inference here for clarity.
-          </p>
-        </div>
-      </div>
-    </div>
-    <!--/ Abstract. -->
-    <!--/ Paper video. -->
-  </div>
-</section>
 
 
 
