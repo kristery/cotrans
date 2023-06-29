@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Deformable Neural Radiance Fields creates free-viewpoint portraits (nerfies) from casually captured videos.">
+  <meta name="keywords" content="Offline reinforcement learning, multi-agent reinforcement learning, behavior cloning">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CoTransporter: Offline Multi-Agent Reinforcement Learning for Object Manipulation</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <!-- <link rel="icon" href="./static/images/favicon.svg"> -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    .colored-bold {
+        color: cornflowerblue;
+        font-weight: bold;
+    }
+    .youtube-video-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+
+    .youtube-video {
+      max-width: 100%;
+      max-height: 100%;
+      margin: 0 auto;
+    }
+
+</style>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+        <div class="navbar-item">
+            <a class="navbar-link-no-arrow" href="https://kristery.github.io" target="_blank">
+                <span class="icon">
+                    <i class="fas fa-home"></i>
+                </span>
+                More Research
+            </a>
+        </div>
+    </div>
+</div>
+
+
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">CoTransporter: Offline Multi-Agent Reinforcement Learning for Object Manipulation</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://kristery.github.io/">Yueh-Hua Wu</a><sup>1</sup>,</span>
+            <span class="author-block">
+             Takayoshi Takayanagi<sup>2</sup>,</span>
+            <span class="author-block">
+              <a href="https://xiaolonw.github.io/">Xiaolong Wang</a><sup>1</sup>,</span>
+            <span class="author-block">
+              Hirotaka Suzuki<sup>2</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>UC San Diego,</span>
+            <span class="author-block"><sup>2</sup>Sony</span>
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- <section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video id="teaser" autoplay muted loop playsinline height="100%">
+        <source src="./static/videos/vis.mp4"
+                type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section> -->
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <div class="youtube-video-wrapper">
+        <div class="youtube-video">
+          <iframe width="840" height="472" src="https://www.youtube.com/embed/1Cx96ba82wI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- <section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item item-steve">
+          <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/steve.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-chair-tp">
+          <video poster="" id="chair-tp" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/chair-tp.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-shiba">
+          <video poster="" id="shiba" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/shiba.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-fullbody">
+          <video poster="" id="fullbody" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/fullbody.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-blueshirt">
+          <video poster="" id="blueshirt" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/blueshirt.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-mask">
+          <video poster="" id="mask" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/mask.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-coffee">
+          <video poster="" id="coffee" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/coffee.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-toby">
+          <video poster="" id="toby" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/toby2.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+
+<section class="hero is-light is-small">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <h2 class="title is-4 colored-bold" style="text-align: center;">Achieving Trajectory Stitching Using Non-Stitching Models</h2>
+
+      <div class="image-container" style="test-align: center;">
+        <img src="./static/images/edt_motivation.png" alt="Motivation" style="max-width: 350px; margin: auto; display: block;">
+      </div>
+
+      <!-- Adding some words below the image -->
+      <div class="text-container" style="text-align: left; margin-bottom: 20px;">
+        <div class="content has-text-justified">
+          <p>
+          We show that achieving trajectory stitching is possible without explicitly training Decision Transformer (DT) to stitch. 
+          A key insight is that DT can be utilized to stitch by adjusting the history length maintained in DT. 
+          Given two trajectories \(s^a, s^b\) in a datasets, a non-stitching model starting from \( s_{t-1}^b \) may end up with a sub-optimal state \( s_{t+1}^b \) as in the dataset. 
+          However, if we are able to adjust the history length to 1 at \( s_t \), the model will be able to stitch with \( s_{t+1}^a \) and generate a more optimal trajectory since there exists \( s_t\rightarrow s_{t+1}^a\) in the dataset.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="hr"></div>
+
+    <!-- Comparsion -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Comparison to Transporter on learning from imperfect demonstrations</h2>
+          <p style="text-align: center;">
+          We compare and visualize our CoTransporter to Transporter Networks with the same initial states.
+          </p>
+            
+            <div style="padding: 12px;"></div>
+            <div class="columns is-centered">              
+                <video id="dollyzoom" autoplay playsinline controls muted loop width="100%">
+                  <source src="static/videos/ring.mp4"
+                          type="video/mp4">
+                </video>
+            </div>
+
+            <div style="padding: 12px;"></div>
+            <div class="columns is-centered">              
+                <video id="dollyzoom" autoplay playsinline controls muted loop width="100%">
+                  <source src="static/videos/cloth.mp4"
+                          type="video/mp4">
+                </video>
+            </div>
+
+
+      </div>
+    </div>   
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-4 colored-bold">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Transporter Networks are a state-of-the-art object manipulation method that learns to manipulate objects with only 
+            a few demonstrations without the need to interact with the environment. However, it requires the given demonstrations 
+            to be optimal or else the learning model will be misled by the failures in the demonstrations. The imperfect demonstrations 
+            are especially common to deformable object manipulation since the high degrees of freedom of deformable objects such as 
+            cloths and cables may introduce multiple redundant steps when we collect demonstrations via teleoperations or even human 
+            hands. In this work, we present Cooperative Transporter (CoTransporter) that enhances the original Transporter Network with 
+            offline multi-agent reinforcement learning (MARL). We show that it outperforms the Transporter by a large margin without 
+            additional data when imperfect demonstrations are given. The CoTransporter utilizes the objective of the Transporter Network 
+            for efficient policy exploration and the MARL objective enforces collaboration within the pick and place agents, which learns 
+            a policy not only obtain higher success rate but also solve the tasks with fewer steps. 
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </div>
+</section>
+
+
+<section class="section" style="background-color: black;">
+  <div class="container is-max-desktop">
+
+    <!-- Paper video. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-4 colored-bold">Summary</h2>
+        <div class="publication-video">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/WOYe0A5W4T0" title="YouTube video player" frameborder="0" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+
+
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3 colored-bold">Results</h2>
+
+        <h2 class="title is-5 has-text-left">Atari (multi-task)</h2>
+        <div class="image-container" style="text-align: center; max-width: 500px; margin: auto; display: block;">
+          <!-- Adding the image named image.png -->
+          <video id="result_id" autoplay muted loop playsinline height="100%">
+            <source src="./static/videos/edt_teaser2.mp4"
+                    type="video/mp4">
+          </video>
+          <img src="./static/images/Atari_mean.png" alt="Some description of the image">
+        </div>
+
+        <div class="content has-text-justified">
+          <p>
+            <span class="colored-bold">Multi-game Atari results.</span> The proposed EDT improves the performance of DT by <span class="colored-bold">39.8%</span>.
+            We consider <span class="colored-bold">20</span> Atari games for the multi-game setting.        
+          </p>
+        </div>
+
+
+        <h2 class="title is-5 has-text-left">D4RL (multi-task)</h2>
+        <div class="image-container" style="text-align: center; max-width: 450px; margin: auto; display: block;">
+          <!-- Adding the image named image.png -->
+          <img src="./static/images/d4rl_summary.png" alt="Some description of the image">
+        </div>
+
+        <div class="content has-text-justified">
+          <p>
+            <span class="colored-bold">Multi-task D4RL results.</span> The proposed EDT outperform the baseline methods by a large margin in a multi-task setting.
+            We gather <span class="colored-bold">medium-replay</span> datasets from the four tasks as a single dataset for training. The medium-replay datasets contain trajectories collected from random policies, 
+            which makes it challenging for non-stitching methods. 
+          </p>
+        </div>
+
+    </div>
+    <!--/ Abstract. -->
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-4 colored-bold">Method</h2>
+
+        <div class="image-container" style="text-align: center;">
+          <!-- Adding the image named image.png -->
+          <img src="./static/images/edt_inference.png" alt="Some description of the image">
+        </div>
+
+        <div class="content has-text-justified">
+          <p>
+            The figure illustrates the action inference procedure within the proposed Elastic Decision Transformer. 
+            Initially, we estimate the value maximizer, \( \tilde{R}_i \), for each length \(i\) within the search space, as delineated by the green rectangle. 
+            Subsequently, we identify the maximal value from all \(\tilde{R}_i\), which provides the optimal history length \(w\). 
+            Utilizing this optimal history length, we estimate the expert value at time step \(t\), denoted as \(\tilde{R}^t_{w,e}\), by Bayes' Rule. 
+            Finally, the action prediction is accomplished via the causal transformer decoder, which is indicated by the blue rectangle. 
+            In practice, we retain the distribution of \(R_i^t\) during the estimation process for \(\tilde{R}_i\) and we present the inference here for clarity.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+
+
+<section class="section" id="BibTex">
+  <div class="container is-max-desktop">
+        <h2 class="title is-4 colored-bold">BibTex</h2>
+      <pre><code>               @article{wu2023cotransporter,
+               author={Wu, Yueh-Hua and Takayanagi, Takayoshi and Wang, Xiaolong and Suzuki, Hirotaka},
+               title={CoTransporter: Offline Multi-Agent Reinforcement Learning for Object Manipulation},
+               year={2023},
+               }</code></pre>
+  </div>
+</section>
+
+
+
+<!-- 
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title is-4 colored-bold">BibTeX</h2>
+    <pre><code>@article{wu2023elastic,
+  author    = {Wu, Yueh-Hua and Wang, Xiaolong and Hamaya, Masashi},
+  title     = {Elastic Decision Transformer},
+  journal   = {arXiv},
+  year      = {2023},
+}</code></pre>
+  </div>
+</section> -->
+
+
+<footer class="footer">
+  <div class="container">
+    <!-- <div class="content has-text-centered">
+      <a class="icon-link"
+         href="./static/videos/nerfies_paper.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div> -->
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website source code is based on <a
+            href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
